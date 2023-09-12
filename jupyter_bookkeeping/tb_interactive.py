@@ -2,7 +2,7 @@ import re
 import pandas as pd
 from ipywidgets import widgets
 
-def tb_interactive(dt, acc_delimiter=":"):
+def tb_interactive(dt, acc_delimiter=":", pd_disp_width=200):
     dtg = ""
     t_years = sorted(dt['date'].dt.year.unique())
     w_years = widgets.Dropdown(
@@ -58,7 +58,7 @@ def tb_interactive(dt, acc_delimiter=":"):
         dtg = dt.groupby(by=[acc_level,map_tb])  #keep order of index labels! Second level will form column names, after `unstack(1)`
         dtg.prn = prn.__get__(dtg)
         dtg.curr = curr.__get__(dtg)
-        with pd.option_context('display.max_colwidth',90):
+        with pd.option_context('display.max_colwidth',90,'display.width',pd_disp_width):
             print(dtg.prn())
     
     out = widgets.interactive_output(get_gr_obj,{'period':w_years, 'account_level':w_account_level})
